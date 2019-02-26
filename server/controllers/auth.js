@@ -63,7 +63,6 @@ module.exports = express => {
       const passwordResult = bcrypt.compareSync(req.body.password, candidate.password )
       if(passwordResult) {
         candidate.secretToken = undefined
-        candidate.active = undefined
         candidate.save()
         const token = jwt.sign({
           email: candidate.email,
