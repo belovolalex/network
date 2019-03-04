@@ -36,21 +36,21 @@ const userSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  potentialFriends: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  }],
   online: {
     type: Boolean,
     default: false
   },
-  whomIAdd: [{
+  whomIAdding: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  whoAddingMe: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   }],
   friends: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'Friend'
   }]
 })
 
