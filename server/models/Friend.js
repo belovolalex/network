@@ -2,18 +2,18 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const friendSchema = new Schema({
-  whomIAdding: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'users'
-  }],
-  whoAddingMe: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'users'
-  }],
   user: {
     type: Schema.Types.ObjectId,
     ref: 'users'
   },
+  IAdding: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'users'
+  }],
+  addingMe: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'users'
+  }],
   friends: [{
     type: Schema.Types.ObjectId,
     ref: 'users'

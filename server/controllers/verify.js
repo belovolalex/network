@@ -3,6 +3,7 @@ module.exports = express => {
   const router = express.Router()
 
   router.post('/', async (req, res) => {
+    console.log('req.body', req.body)
     const verify = await User.findOne({
       email: req.body.email,
       secretToken: req.body.token

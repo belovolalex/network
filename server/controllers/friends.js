@@ -1,40 +1,20 @@
 const User = require('../models/User')
 const Friend = require('../models/Friend')
 const passport = require('passport')
-const mongoose = require('mongoose')
 const errorHandler = require('../utils/errorHandler')
+
 module.exports = express => {
   
   const router = express.Router()
   
-  async function getFriends(arr, fields) {
-    let friends = []
-    for(item of arr) {
-      let friend = await searchFriend(item, fields)
-      friends.push(friend)
-    }
-    return friends
-  }
-
-  async function searchFriend(item, fields) {
-    let objectIdItem = mongoose.Types.ObjectId(item)
-    let friend = await User.findById({_id: objectIdItem}, fields)
-    return friend
-  }
-
   router.post('/friends', passport.authenticate('jwt', {session: false}), async (req, res) => {
-    try{
-      // console.log('req.body', req.body)
-      // const ttt = await User.findById(req.body.id, '-_id friends').populate('friends')
-      // const friendsId = await User.findById(req.body.id, '-_id friends')
-      const friendsId = await User.findById(req.body.id)
-      console.log('friendsId ------- ', friendsId)
-      // let ttt = friendsId.friends.populate(user._id)
-      // console.log('----------------', ttt)
-      const whoAddingMeId = await User.findById(req.body.id, '-_id whoAddingMe')
-      const whoAddingMe = await getFriends(whoAddingMeId.whoAddingMe, ['name', 'lastName', 'image', 'online']) 
-      const friends = await getFriends(friendsId.friends, ['name', 'lastName', 'image', 'online'])
-      res.status(200).json({friends: friends, whoAddingMe: whoAddingMe})
+    try {
+      const populateQuery = [
+                              {path: 'friends', select: 'image online name lastName', options: {limit : req.body.limit }},
+                              {path: 'addingMe', select: 'image online name lastName'}
+                            ]
+      const friends = await Friend.findOne({user: req.body.id}, '_id').populate(populateQuery)
+      res.status(200).json(friends)
     } catch(e) {
       errorHandler(res, e)
     }
@@ -42,27 +22,57 @@ module.exports = express => {
   
   router.post('/humans', passport.authenticate('jwt', {session: false}), async (req, res) => {
     try{
-      const friends = await User.findById(req.body.id, ['-_id', 'friends'])
-      const whoAddingMeId = await User.findById(req.body.id, '-_id whoAddingMe')
-      let humans = await User.find({$and : [{_id: {$nin : friends.friends}}, {_id: {$nin: whoAddingMeId.whoAddingMe}}, {_id: {$ne: req.body.id}}]}, ['_id', 'image', 'name', 'lastName', 'online'])
-      .sort([['date', -1]])
-      .limit(req.body.limit)
-      .select('name lastName image online whoAddingMe')
+      const user = await Friend.findOne({user: req.body.id}, '-_id IAdding addingMe friends')
+      let addingMe
+      let friends
+      let IAdding
+      if(user) {
+        user.addingMe.length ? addingMe = {_id: {$nin: user.addingMe}} : addingMe = {}
+        user.friends.length ? friends = {_id: {$nin: user.friends}} : friends = {}
+        user.IAdding.length ? IAdding = {_id: {$nin: user.IAdding}} : IAdding = {}
+      } else {
+        addingMe = {}
+        friends = {}
+        IAdding = {}
+      }
+      const humans = await User.find({$and: [{_id: {$ne: req.body.id}}, addingMe, IAdding, friends]})
+        .sort([['date', -1]])
+        .limit(req.body.limit)
+        .select('name lastName image online')
         res.status(200).json(humans)
       } catch(e) {
       errorHandler(res, e)
     }
   })
   
-  router.post('/addToFriends', passport.authenticate('jwt', {session: false}), async (req, res) => {
+  router.post('/offerToFriendship', passport.authenticate('jwt', {session: false}), async (req, res) => {
     try{
-      const sender = await User.findOneAndUpdate({_id: req.body.id}, { $addToSet: { whomIAdding: req.body.humanId} })
-      const recipient = await User.findOneAndUpdate({_id: req.body.humanId}, { $addToSet: { whoAddingMe: req.body.id} })
-      await sender.save()
-      await recipient.save()
-      res.status(200).json({
-        message: 'запрос добавлен'
+      const senderCandidate = await Friend.findOne({
+        user: req.body.id
       })
+      if(senderCandidate) {
+        await senderCandidate.update({$addToSet: {IAdding: req.body.humanId}})
+        await senderCandidate.save()
+      } else {
+        const friend = new Friend({
+          user: req.body.id,
+          IAdding: req.body.humanId
+        })
+        await friend.save()
+      }
+      const recipientCandidate = await Friend.findOne({
+        user: req.body.humanId
+      })
+      if(recipientCandidate) {
+        await recipientCandidate.update({$addToSet: {addingMe: req.body.id}})
+        await recipientCandidate.save()
+      } else {
+        const friend = new Friend({
+          user: req.body.humanId,
+          addingMe: req.body.id
+        })
+        await friend.save()
+      }
     } catch(e) {
       errorHandler(res, e)
     }
@@ -70,14 +80,14 @@ module.exports = express => {
   
   router.post('/addFriend', passport.authenticate('jwt', {session: false}), async (req, res) => {
     try{
-      const addFriendToSender = await User.findOneAndUpdate({_id: req.body.id}, { $addToSet: { friends: req.body.friendId} })
-      const addFriendToRecipient = await User.findOneAndUpdate({_id: req.body.friendId}, { $addToSet: { friends: req.body.id} })
-      const deletefromWhoAddingMe = await User.findOneAndUpdate({_id: req.body.id}, {$pull: {whoAddingMe: req.body.friendId}})
-      const deletefromWhomIAdding = await User.findByIdAndUpdate(req.body.friendId, {$pull: {whomIAdding: req.body.id}})
-      await deletefromWhoAddingMe.save()
-      await deletefromWhomIAdding.save()
+      const addFriendTosender = await Friend.findOneAndUpdate( {user: req.body.id}, {$addToSet: {friends: req.body.friendId}} )
+      const deletefromAddingMe = await Friend.findOneAndUpdate( {user: req.body.id}, {$pull: {addingMe: req.body.friendId}} )
+      const addFriendToRecipient = await Friend.findOneAndUpdate( {user: req.body.friendId}, { $addToSet: { friends: req.body.id}} )
+      const deletefromIAdding = await Friend.findOneAndUpdate({user: req.body.friendId}, {$pull: {IAdding: req.body.id}})
+      await addFriendTosender.save()
+      await deletefromAddingMe.save()
       await addFriendToRecipient.save()
-      await addFriendToSender.save()
+      await deletefromIAdding.save()
       res.status(200).json({message: 'друг добавлен'})      
     } catch(e) {
       errorHandler(res, e)
@@ -86,8 +96,8 @@ module.exports = express => {
 
   router.post('/deleteFriend', passport.authenticate('jwt', {session: false}), async (req, res) => {
     try {
-      const sender = await User.findByIdAndUpdate(req.body.id, {$pull: {friends: req.body.friendId}})
-      const friends = await User.findByIdAndUpdate(req.body.friendId, {$pull: {friends: req.body.id}})
+      const sender = await Friend.findOneAndUpdate({user: req.body.id}, {$pull: {friends: req.body.friendId}})
+      const friends = await Friend.findOneAndUpdate({user: req.body.friendId}, {$pull: {friends: req.body.id}})
       sender.save()
       friends.save()
       res.status(200).json({message: 'удаление успешно'})
@@ -98,8 +108,8 @@ module.exports = express => {
   
   router.post('/rejectionFriendship', passport.authenticate('jwt', {session: false}), async (req, res) => {
     try {
-      const sender = await User.findByIdAndUpdate(req.body.id, {$pull: {whoAddingMe: req.body.humanId}})
-      const recipient = await User.findByIdAndUpdate(req.body.humanId, {$pull: {whomIAdding: req.body.id}})
+      const sender = await Friend.findOneAndUpdate({user: req.body.id}, {$pull: {addingMe: req.body.humanId}})
+      const recipient = await Friend.findOneAndUpdate({user:req.body.humanId}, {$pull: {IAdding: req.body.id}})
       sender.save()
       recipient.save()
       res.status(200).json({message: 'удаление успешно'})
@@ -108,17 +118,6 @@ module.exports = express => {
     }
   })
   
-  // router.post('/deleteFriend', passport.authenticate('jwt', {session: false}), async (req, res) => {
-  //   try{
-  //     const sender = await User.findByIdAndUpdate(req.body.sender, {$pull: {friends: req.body.friend}})
-  //     const friends = await User.findByIdAndUpdate(req.body.friend, {$pull: {friends: req.body.sender}})
-  //     sender.save()
-  //     friends.save()
-  //     res.status(200).json({message: 'удаление успешно'})
-  //   } catch(e) {
-  //     errorHandler(res, e)
-  //   }
-  // })
   // router.post('/friendsForMessage', passport.authenticate('jwt', {session: false}), async (req, res) => {
   //   try {
   //     const friendsId = await User.findById(req.body.id, '-_id friends')
@@ -178,21 +177,6 @@ module.exports = express => {
   //     errorHandler(res, e)
   //   }
   // })
-  // router.post('/addToFriends', passport.authenticate('jwt', {session: false}), async (req, res) => {
-  //   try{
-  //     const addFriendToSender = await User.findOneAndUpdate({_id: req.body.sender}, { $addToSet: { friends: req.body.recipient} })
-  //     const addFriendToRecipient = await User.findOneAndUpdate({_id: req.body.recipient}, { $addToSet: { friends: req.body.sender} })
-  //     const deletefromSenderPotential = await User.findOneAndUpdate({_id: req.body.sender}, {$pull: {potentialFriends: req.body.recipient}})
-  //     const deletefromSenderRecipient = await User.findByIdAndUpdate(req.body.recipient, {$pull: {whomIAdd: req.body.sender}})
-  //     await addFriendToSender.save()
-  //     await addFriendToRecipient.save()
-  //     await deletefromSenderPotential.save()
-  //     await deletefromSenderRecipient.save()
-  //     res.status(200).json({message: 'друг добавлен'})
-  //   } catch(e) {
-  //     errorHandler(res, e)
-  //   }
-  // })
-  
+
   return router
 }

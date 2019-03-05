@@ -39,7 +39,7 @@ module.exports = express => {
             from: 'social network Friend',
             to : req.body.email,
             subject : "регистрация в Friend",
-            html : `Здравствуйте, ${req.body.name}! Для подтверждения регистрации, скопируйте и введите секретный ключ в форму <span>${secretToken}</span>`
+            html : `<p>Здравствуйте, ${req.body.name}! Для подтверждения регистрации, скопируйте и введите секретный ключ в форму</p><br> <span style="border: 1px solid #285892; padding: 5px; border-radius: 2px; color:#285892; display:inline-block;">${secretToken}</span>`
           }
           try {
             await user.save()

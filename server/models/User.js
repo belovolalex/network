@@ -24,7 +24,7 @@ const userSchema = new Schema({
   },
   image: {
     type: String,
-    default: 'https://res.cloudinary.com/dquwzmbz/image/upload/v1549121251/avatar.svg'
+    default: 'https://res.cloudinary.com/dquwzmbz/image/upload/v1551698615/avatar.svg'
   },
   active: {
     type: Boolean
@@ -39,19 +39,6 @@ const userSchema = new Schema({
   online: {
     type: Boolean,
     default: false
-  },
-  whomIAdding: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  }],
-  whoAddingMe: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  }],
-  friends: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Friend'
-  }]
+  }
 })
-
 module.exports = mongoose.model('users', userSchema)
