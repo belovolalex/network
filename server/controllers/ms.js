@@ -1,21 +1,22 @@
 const passport = require('passport')
 const Message = require('../models/Message')
 const mongoose = require('mongoose')
+const errorHandler = require('../utils/errorHandler')
 
 module.exports = express => {
   const router = express.Router()
   router.post('/', passport.authenticate('jwt', {session: false}), async (req, res) => {
     let newMsg = {
       message: req.body.message,
-      sender: req.body.sender,
-      recipient: req.body.recipient
+      sender: req.body.from,
+      recipient: req.body.to
     }
     let message = new Message(newMsg)
     try {
-      await message.save()
-      res.status(200).json({message:'ok'})
+      let msg = await message.save()
+      res.status(200).json({message: msg})
     } catch(e) {
-      console.log(e)
+      errorHandler(res, e)
     }
   })
   router.post('/friendMsgs', passport.authenticate('jwt', {session: false}), async (req, res) => {
@@ -27,11 +28,11 @@ module.exports = express => {
         .skip(req.body.skip * req.body.limit)
       res.status(200).json(msgs)
     } catch(e) {
-      console.log(e)
+      errorHandler(res, e)
     }
   })
   router.post('/lastMsgs', passport.authenticate('jwt', {session: false}), async (req, res) => {
-    try {  
+    try {
       let idToSearch = mongoose.Types.ObjectId(req.body.sender)
         const msgs = await Message.aggregate(
           [
@@ -97,19 +98,33 @@ module.exports = express => {
             }
           ]
           )
-          res.status(200).json(msgs)
+          let unreadMsgs = await Message.aggregate(
+            [
+              {
+                $match: {
+                  $and: [{recipient: mongoose.Types.ObjectId(req.body.sender)}, {stateRead: false}]
+                }
+              },
+              {
+                $group: {
+                  _id: "$sender",
+                  countUnreadMsgs : { $sum : 1 }
+                }
+              }
+            ]
+          )
+          res.status(200).json({msgs: msgs, unreadMsgs : unreadMsgs})
     } catch(e) {  
-      console.log(e)
+      errorHandler(res, e)
     }
   })
   router.post('/changeStateReadMsgs', passport.authenticate('jwt', {session: false}), async (req, res) => {
     try {
-      let msgs = Message.updateMany({_id: {$in: req.body}}, {$set: {'stateRead': true}}, (err, doc) => {
-        console.log('doc', doc)
-      })
+      await Message.updateMany({_id: {$in: req.body.arrMsgsId}}, {$set: {'stateRead': true}})
+      res.status(200).json({message: 'msgs was updated'})
     } catch(e) {
-
-    }  
+      errorHandler(res, e)
+    }
   })
   return router
 }

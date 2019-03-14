@@ -7,7 +7,6 @@ const bodyParser = require('body-parser')
 const passport = require('passport')
 const io = require('socket.io')(http)
 const cors = require('cors')
-const path = require('path')
 
 const authController = require('./controllers/auth')(express)
 const verifyController = require('./controllers/verify')(express)

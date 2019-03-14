@@ -39,7 +39,7 @@ module.exports = express => {
             from: 'social network Friend',
             to : req.body.email,
             subject : "регистрация в Friend",
-            html : `<p>Здравствуйте, ${req.body.name}! Для подтверждения регистрации, скопируйте и введите секретный ключ в форму</p><br> <span style="border: 1px solid #285892; padding: 5px; border-radius: 2px; color:#285892; display:inline-block;">${secretToken}</span>`
+            html : `<p style="text-transform: capitalize;">Здравствуйте, ${req.body.name}! Для подтверждения регистрации, скопируйте и введите секретный ключ в форму</p><br> <span style="border: 1px solid #285892; padding: 5px; border-radius: 2px; color:#285892; display:inline-block;">${secretToken}</span>`
           }
           try {
             await user.save()
@@ -67,7 +67,7 @@ module.exports = express => {
         const token = jwt.sign({
           email: candidate.email,
           userId: candidate._id
-        }, keys.jwt, { expiresIn: 60 * 60 * 10})
+        }, keys.jwt, { expiresIn: 60 * 60 * 168})
         res.status(200).json({
           token: `Bearer ${token}`,
           id: candidate._id,

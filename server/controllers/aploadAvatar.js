@@ -21,7 +21,7 @@ module.exports = express => {
       } else {
         if(req.file == undefined){
           res.status(400).json({
-            message: 'пусто'
+            message: 'undefined'
           })
         } else {
           const user = await User.findById(req.body.id, (err, doc) => {

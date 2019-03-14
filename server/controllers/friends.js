@@ -117,66 +117,28 @@ module.exports = express => {
       errorHandler(res, e)
     }
   })
-  
-  // router.post('/friendsForMessage', passport.authenticate('jwt', {session: false}), async (req, res) => {
-  //   try {
-  //     const friendsId = await User.findById(req.body.id, '-_id friends')
-  //     const friends = await getFriends(friendsId.friends, ['name', 'lastName', 'image', 'online'])
-  //     res.status(200).json(friends)
-  //   } catch (e) {
-  //     errorHandler(res, e)
-  //   }
-  // })
 
-  // router.post('/newFriends', passport.authenticate('jwt', {session: false}), async (req, res) => {
-  //   try {
-  //     const whomIAdd = await User.findById(req.body.id, 'whomIAdd')
-  //     const myFriends = await User.findById(req.body.id, ['-_id', 'friends'])
-  //     const friends = await User.find({$and : [{_id: {$nin : myFriends.friends}}, {_id: {$ne: req.body.id}}]}, ['_id', 'image', 'name', 'lastName', 'online'])
-  //     let data = [
-  //       whomIAdd,
-  //       {friends: friends}
-  //     ]
-  //     res.status(200).json(data)
-  //   } catch (e) {
-  //     errorHandler(res, e)
-  //   }
-  // })
+  router.post('/filterFriends', passport.authenticate('jwt', {session: false}), async (req, res) => {
+    try {
+      const friendsId = await Friend.findOne({user: req.body.id}, '-_id friends')
+      var terms = req.body.value.split(' ').join('|')
+      var re = new RegExp(terms, 'ig')
+      const filteredFriends = await User.find({$and: [{_id: friendsId.friends}, {$or: [{'name': re}, {'lastName': re}]}]}, 'name lastName image online')
+      res.status(200).json(filteredFriends)
+    } catch(e) {
+      errorHandler(res, e)
+    }
+  })
 
-  // router.post('/potentialFriends', passport.authenticate('jwt', {session: false}), async (req, res) => {
-  //   try{
-  //     const sender = await User.findOneAndUpdate({_id: req.body.sender}, { $addToSet: { whomIAdd:  req.body.recipient} })
-  //     const recipient = await User.findOneAndUpdate({_id: req.body.recipient}, { $addToSet: { potentialFriends:  req.body.sender} })
-  //     await sender.save()
-  //     await recipient.save()
-  //     res.status(200).json({
-  //       message: 'запрос добавлен'
-  //     })
-  //   } catch(e) {
-  //     errorHandler(res, e)
-  //   }
-  // })
-  // router.post('/friendsRequest', passport.authenticate('jwt', {session: false}), async (req, res) => {
-  //   try{
-  //     const potentialFriendsId = await User.findById(req.body.id, '-_id potentialFriends')
-  //     const potentialFriends = await getFriends(potentialFriendsId.potentialFriends, ['name', 'lastName', 'image', 'online'])
-  //     res.status(200).json(potentialFriends)
-  //   } catch(e) {
-  //     errorHandler(res, e)
-  //   }
-  // })
-  // router.patch('/deletefriendRequest', passport.authenticate('jwt', {session: false}), async (req, res) => {
-  //   try{
-  //     const sender = await User.findByIdAndUpdate(req.body.sender, {$pull: {potentialFriends: req.body.friendRequestId}})
-  //     const recipient = await User.findByIdAndUpdate(req.body.friendRequestId, {$pull: {whomIAdd: req.body.sender}})
-  //     sender.save()
-  //     recipient.save()
-
-  //     res.status(200).json({message: 'друг удален'})
-  //   } catch(e) {
-  //     errorHandler(res, e)
-  //   }
-  // })
-
+  router.post('/filterHumans', passport.authenticate('jwt', {session: false}), async (req, res) => {
+    try {
+      var terms = req.body.value.split(' ').join('|')
+      var re = new RegExp(terms, 'ig')
+      const filteredHumans = await User.find({$or: [{'name': re}, {'lastName': re}]}, 'name lastName image online')
+      res.status(200).json(filteredHumans)
+    } catch(e) {
+      errorHandler(res, e)
+    }
+  })
   return router
 }
