@@ -1,6 +1,7 @@
 const User = require('../models/User')
 module.exports = io => {
   let users = []
+  
   io.on('connection', function(socket) {
     socket.on('setStatusOnline', async payload => {
       if(payload !== null) {
@@ -13,7 +14,8 @@ module.exports = io => {
         io.emit('setStatusOnline', payload)
       }
     })
-    socket.on('disconnect', async () => {
+    
+    async function setStatusOffline(socket) {
       let userId
       users.some((el, idx, arr) => {
         if(el[socket.id]) {
@@ -28,7 +30,16 @@ module.exports = io => {
         await user.save()
       }
       io.emit('setStatusOffline', userId)
+    }
+
+    socket.on('logout', () => {
+      setStatusOffline(socket)
     })
+
+    socket.on('disconnect', async () => {
+      setStatusOffline(socket)
+    })
+
     socket.on('offerToFriendship', payload => {
       users.some(async el => {
         if(payload.to === Object.values(el)[0]) {
@@ -37,6 +48,7 @@ module.exports = io => {
         }
       })
     })
+
     socket.on('msg', payload => {
       users.some(el => {
         if(payload.message.recipient === Object.values(el)[0]) {
@@ -51,6 +63,7 @@ module.exports = io => {
         }
      })
     })
+    
     socket.on('markReadMsgs', payload => {
       users.some(el => {
         if(payload.to === Object.values(el)[0]) {
