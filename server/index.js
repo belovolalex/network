@@ -1,11 +1,11 @@
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
-const http = require('http').Server(app)
+const http = require('http').createServer(app)
 const keys = require('./config/keys')
 const bodyParser = require('body-parser')
 const passport = require('passport')
-const io = require('socket.io')(http)
+const io = require('socket.io').listen(http)
 const cors = require('cors')
 
 const authController = require('./controllers/auth')(express)
