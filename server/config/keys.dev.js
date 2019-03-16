@@ -3,7 +3,7 @@ module.exports = {
   jwt: '8Du=Rq59Gt/Z.?A!',
   mailer: {
     user: "mynewsocialnetwork4@gmail.com",
-    pass: "fabioselmi11"
+    pass: "fabioselmi22"
   },
   cloudinary: { 
     cloud_name: 'dquwzmbz', 
