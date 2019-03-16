@@ -40,11 +40,11 @@ module.exports = io => {
       setStatusOffline(socket)
     })
 
-    socket.on('offerToFriendship', payload => {
-      users.some(async el => {
+    socket.on('offerToFriendship', async payload => {
+      users.some( async el => {
         if(payload.to === Object.values(el)[0]) {
           const user = await User.findById(payload.from, 'name lastName online image')
-          io.to(Object.keys(el)[0]).emit('offerToFriendship', user)
+          await io.to(Object.keys(el)[0]).emit('offerToFriendship', user)
         }
       })
     })
