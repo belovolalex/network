@@ -32,7 +32,7 @@ module.exports = io => {
       io.emit('setStatusOffline', userId)
     }
 
-    socket.on('logout', () => {
+    socket.on('logout', async () => {
       setStatusOffline(socket)
     })
 
