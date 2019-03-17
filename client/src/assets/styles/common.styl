@@ -1,0 +1,177 @@
+// media
+
+size500()
+ @media (min-width 500px)
+    {block}
+xs()
+ @media (min-width 400px)
+    {block}
+sm()
+ @media (min-width 768px)
+   {block}
+md()
+ @media (min-width 992px)
+   {block}
+lg()
+ @media (min-width 1220px)
+   {block}
+
+
+//variabels
+
+$light-grey = #dce1e8
+$light = #f1eded
+$grey = #bec6cf
+$hover-blue = #5c8fcc
+$light-blue = #e1e5eb
+$light-dodgerblue = #c6d5e8
+$dodgerblue = #b0ccef
+$blue = #477dbd
+$dark-blue = #215491
+$online = #24b624
+
+$text = #14355d
+$height-header = 60px
+
+
+//--------------------------------------------//
+
+
+*
+  margin 0
+  padding 0
+  box-sizing border-box
+  font-family sans-serif
+html
+  font-size 14px
+  +sm()
+    font-size 16px
+#app
+  height 100%
+  min-height 100vh
+  background-color #f1eded
+button
+  outline none
+  border none
+  cursor pointer
+a
+  cursor pointer
+  text-decoration none
+input
+  border none
+  outline none
+ul
+  margin 0
+  padding 0
+  list-style-type none
+.container
+  width 100%
+  margin 0 auto
+  padding 0 10px
+  +sm()
+    width 740px
+    padding 0 15px
+  +md()
+    width 940px
+
+span, p, pre
+  color #2f5b8f
+
+pre
+  white-space pre-wrap
+  word-wrap break-word
+
+.spinner
+  width 30px
+  height 30px
+  border 2px solid transparent
+  border-top 3px solid $blue
+  border-radius 100%
+  position absolute
+  top 0
+  bottom 0
+  left 0
+  right 0
+  margin auto 
+  animation spin 1s infinite linear
+@keyframes spin
+  from
+    transform rotate(0deg)
+  to
+    transform rotate(360deg)
+
+
+
+//icons
+
+@font-face {
+  font-family: 'icomoon';
+  src:  url('~@/assets/fonts/icomoon.eot?ca4mi9');
+  src:  url('~@/assets/fonts/icomoon.eot?ca4mi9#iefix') format('embedded-opentype'),
+    url('~@/assets/fonts/icomoon.ttf?ca4mi9') format('truetype'),
+    url('~@/assets/fonts/icomoon.woff?ca4mi9') format('woff'),
+    url('~@/assets/fonts/icomoon.svg?ca4mi9#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-send:before {
+  content: "\e900";
+}
+.icon-arrow_down:before {
+  content: "\e902";
+}
+.icon-arrow_left:before {
+  content: "\e903";
+}
+.icon-arrow_right:before {
+  content: "\e904";
+}
+.icon-arrow_up:before {
+  content: "\e905";
+}
+.icon-home2:before {
+  content: "\e901";
+}
+.icon-bubbles2:before {
+  content: "\e96d";
+}
+.icon-user:before {
+  content: "\e971";
+}
+.icon-search:before {
+  content: "\e986";
+}
+.icon-eye:before {
+  content: "\e9ce";
+}
+.icon-happy:before {
+  content: "\e9df";
+}
+.icon-happy2:before {
+  content: "\e9e0";
+}
+.icon-sad:before {
+  content: "\e9e5";
+}
+.icon-cool:before {
+  content: "\e9eb";
+}
+.icon-cool2:before {
+  content: "\e9ec";
+}
