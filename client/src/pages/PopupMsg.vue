@@ -1,7 +1,7 @@
 <template lang="pug">
   .wrap-popup-msg
     .popup-msg-header
-      span.popup-msg-header__title Новое сообщение
+      span.popup-msg-header__title New message
       span.popup-msg-header__close(@click="closePopup") x
     .popup-msg-body
       .popup-msg-info
@@ -9,7 +9,7 @@
           img.popup-msg__img(:src="user.image")
         p.popup-msg-wrap-name {{ user.name | capitalize }} {{ user.lastName | capitalize }}
       textarea.popup-msg-textarea(v-model="msgValue")
-    button.popup-msg-btn(@click="sendMsg") Отправить
+    button.popup-msg-btn(@click="sendMsg") Send
 </template>
 
 <script>

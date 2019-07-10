@@ -14,13 +14,13 @@
 </template>
 
 <script>
-import Messages from '../components/Messages'
-import Home from '../components/Home'
-import Friends from '../components/Friends'
-import HeaderComp from '../components/HeaderComp'
-import MenuDesktop from '../components/MenuDesktop'
-import MenuMobile from '../components/MenuMobile'
-import User from '../components/User'
+import Messages from '../pages/Messages'
+import Home from '../pages/Home'
+import Friends from '../pages/Friends'
+import HeaderComp from '../pages/HeaderComp'
+import MenuDesktop from '../pages/MenuDesktop'
+import MenuMobile from '../pages/MenuMobile'
+import User from '../pages/User'
 export default {
   components: {
     HeaderComp,

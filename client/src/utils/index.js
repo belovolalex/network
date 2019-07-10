@@ -1,10 +1,10 @@
 export const dictionary = {
-  ru: {
+  en: {
     messages: {
-      email: 'введите корректный email',
-      required: 'поле обязательное для заполнения',
-      alpha: 'вводите только буквы',
-      min: 'минимальная длина 6 символов'
+      email: 'enter a valid email',
+      required: 'this field is required',
+      alpha: 'enter only letters',
+      min: 'min length 6 characters'
     }
   }
 }

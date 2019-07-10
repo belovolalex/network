@@ -26,23 +26,23 @@ export default {
         let cases = [2, 0, 1, 1, 1, 2]  
         return titles[ (number%100>4 && number%100<20)? 2 : cases[(number%10<5)?number%10:5] ] 
       }
-      let  request = declOfNum(whoAddingMe, ['новая заявка', 'новые заявки', 'новых заявок'])
-      return `У вас ${whoAddingMe} ${request} в друзья`
+      let  request = declOfNum(whoAddingMe, ['new request', 'new requests', 'new requests'])
+      return `You have ${whoAddingMe} ${request} in friends`
     },
     friendsTitle: state => {
       if(!state.spinnerFriends) {
         if(state.whoAddingMe.length) {
-          return state.friends.length ? 'Мои друзья' : 'У вас пока нет друзей'
+          return state.friends.length ? 'My friends' : 'You have no friends yet'
         } else {
-          return state.friends.length ? '' : 'У вас пока нет друзей'
+          return state.friends.length ? '' : 'You have no friends yet'
         }
       }
     },
     friendsLength: state => state.friends.length,
     showFriends: state => state.activeTab === 'FriendsFriends' && state.stateSearchFriends === false ? state.friends : state.filteredFriends,
     showHumans: state => state.activeTab === 'FriendsHumans' && state.stateSearchHumans === false ? state.humans : state.filteredHumans,
-    noMatchesFriends: state => state.stateSearchFriends && state.filteredFriends <= 0 && !state.spinnerFriends ? 'совпадений не найдено' : null,
-    noMatchesHumans: state => state.stateSearchHumans && state.filteredHumans <= 0 && !state.spinnerHumans ? 'совпадений не найдено' : null
+    noMatchesFriends: state => state.stateSearchFriends && state.filteredFriends <= 0 && !state.spinnerFriends ? 'matches were found' : null,
+    noMatchesHumans: state => state.stateSearchHumans && state.filteredHumans <= 0 && !state.spinnerHumans ? 'matches were found' : null
   },
   mutations: {
     changeActiveTab(state, payload) {
@@ -67,7 +67,7 @@ export default {
     },
     getHumans(state, payload) {
       payload.forEach((el) => {
-        el.btnText = 'добавить в друзья'
+        el.btnText = 'add to friends'
         el.friendQuery = false
         state.humans.push(el)
       })
@@ -75,9 +75,9 @@ export default {
     },
     disableBtn(state, payload) {
       if(!state.stateSearchHumans) {
-        state.humans.forEach(el => el._id === payload ? (el.btnText = 'запрос отправлен', el.friendQuery = true ) : null)
+        state.humans.forEach(el => el._id === payload ? (el.btnText = 'request sent', el.friendQuery = true ) : null)
       } else {
-        state.filteredHumans.forEach(el => el._id === payload ? (el.btnText = 'запрос отправлен', el.friendQuery = true ) : null)
+        state.filteredHumans.forEach(el => el._id === payload ? (el.btnText = 'request sent', el.friendQuery = true ) : null)
       }
     },
     fromWhoAddingMeToFriends(state, payload) {
@@ -97,7 +97,7 @@ export default {
     },
     setFilteredHumans(state, payload) {
       payload.forEach(el => {
-        el.btnText = 'добавить в друзья'
+        el.btnText = 'add to friends'
         el.friendQuery = false
         state.filteredHumans.push(el)
       })

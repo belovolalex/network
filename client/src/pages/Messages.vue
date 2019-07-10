@@ -26,7 +26,7 @@
               img.msgs-friend__img(:src="item.image")
             p.msgs-friend__name {{ item.name | capitalize}} {{ item.lastName | capitalize}}
         .note(v-else)
-          p для того, чтобы начать общаться добавьте друзей
+          p add friends to start chatting
       .msgs-last-msgs(v-else)
         p.margin-top10
         .msgs-msg-row(
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import {mapGetters, mapState} from 'vuex'
+import { mapState } from 'vuex'
 import MessagesDialogWindow from './MessagesDialogWindow'
 export default {
   components: {
@@ -56,7 +56,7 @@ export default {
   computed: {
     ...mapState('messages', [ 'lastMsgs', 'stateDialogWindow', 'stateRotate', 'friend', 'spinnerLastMsgs' ]),
     textTooltip() {
-      return !this.stateRotate ? 'Начать беседу' : 'Отмена'
+      return !this.stateRotate ? 'Start a conversation' : 'Cancel'
     }
   },
   watch: {

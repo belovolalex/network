@@ -6,7 +6,7 @@
       p {{ friend.name | capitalize }} {{ friend.lastName | capitalize}}
     .spinner(v-if="spinnerFriendMsgs")
     .dialog-messages(v-else)
-      p.dialog-messages__note(v-if="getStateFirstMsgs") у вас больше нет сообщений
+      p.dialog-messages__note(v-if="getStateFirstMsgs") you no longer have messages
       .dialog-wrap-message(v-for="(item, idx) in friendMsgs")
         p.dialog-message__day(v-if="item.showDate") {{item.date}}
         p(v-if="item.showName").dialog-message__username {{ item.sender.name | capitalize }}
@@ -114,7 +114,7 @@ export default {
       })
     },
     scroll() {
-      window.onscroll = (e) => {
+      window.onscroll = () => {
         let scrolled = window.pageYOffset || document.documentElement.scrollTop
         if(scrolled < 5 && this.msgsSettings.skip == this.counter && !this.getStateFirstMsgs) {
           setTimeout(() => {

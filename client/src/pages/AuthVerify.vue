@@ -1,14 +1,14 @@
 <template lang="pug">
   .wrapper-verify
     .wrapper-verify-title(v-if="verifyError")
-      p Проверочный ключ не совпал
-      p Скорее всего вы неправильно его скопировали
+      p The verification key did not match
+      p Most likely you copied it wrong.
     .wrapper-verify-title(v-else)
-      p На вашу почту в течение нескольких минут прийдет письмо с секретным ключом
-      p Для успешной регистрации введите ключ в поле
+      p A letter with a secret key will arrive in your mail within a few minutes.
+      p For successful registration, enter the key in the field
     .wrapper-verify-body
       input.input-verify(type="text" v-model="token")
-      button.button-verify(@click.prevent="checkToken") подтвердить
+      button.button-verify(@click.prevent="checkToken") Confirm
 </template>
 
 <script>

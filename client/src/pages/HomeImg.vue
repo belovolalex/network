@@ -24,11 +24,11 @@
             @file-choose="fileChoose"
             )
     .home-top-block-edit-img(:class="[editAvatar ? 'show-edit' : '']")
-      span.home-top-block-edit-img__control(@click="changeAvatar") изменить
+      span.home-top-block-edit-img__control(@click="changeAvatar") change
       span.home-top-block-edit-img__control(
                                             @click="uploadAvatar"
                                             :style="[ showBtnUpload ? '' : {display: 'none'}]"
-                                            ) загрузить
+                                            ) download
 </template>
 
 <script>

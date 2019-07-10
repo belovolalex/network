@@ -26,7 +26,7 @@ export default {
       limit: 30,
       skip: 0
     },
-    months: 'января,февраля,марта,апреля,мая,июня,июля,августа,сентября,октября,ноября,декабря'.split(',')
+    months: 'january,february,march,april,may,june,july,august,september,october,november,december'.split(',')
   },
   getters: {
     getStateFirstMsgs: state => state.stateFirstMsgs && state.msgsSettings.skip > 1 ? true : false,

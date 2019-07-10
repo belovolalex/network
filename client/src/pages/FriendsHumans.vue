@@ -3,7 +3,7 @@
     p {{ noMatchesHumans }}
     .spinner(v-if="spinnerHumans")
     .friends-humans-wrap(v-else ref="humansWrap")
-      router-link.friends-human(v-for="item in showHumans" :to="`/user/${item._id}`")
+      router-link.friends-human(v-for="(item, idx) in showHumans" :to="`/user/${item._id}`" :key="idx")
         .friends-human-wrap-image
           img.friends-human__image(:src="item.image")
         .friends-human__name {{ item.name | capitalize}}

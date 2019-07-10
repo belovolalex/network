@@ -15,7 +15,7 @@ section.header
                          @mouseover="hideHover = !hideHover"
                          @mouseout="hideHover = !hideHover"
                          )
-            span.logOut(@click="logOut") выйти
+            span.logOut(@click="logOut") logout
 </template>
 
 <script>

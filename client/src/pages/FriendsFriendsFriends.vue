@@ -2,7 +2,7 @@
 .wrap-friends
   p.wrap-friends__title {{ friendsTitle }}
   p {{ noMatchesFriends }}
-  router-link.wrap-friend(v-for="(item, idx) in showFriends" :to="`/user/${item._id}`")
+  router-link.wrap-friend(v-for="(item, idx) in showFriends" :to="`/user/${item._id}`" :key="idx")
     .friends-friend
       .friend-icon(@click.prevent="settings(idx)")
         span.friend-icon__point
@@ -14,7 +14,7 @@
                       v-on-clickaway="settings"
                       )
         transition(name="fade")
-          span.friend-delete-friend(@click="deleteFriend(item._id, idx)") убрать из друзей
+          span.friend-delete-friend(@click="deleteFriend(item._id, idx)") remove from friends
       .friend-wrap-image
         .friend-status(:class="item.online ? 'online' : null")
         img.friend__image(:src="item.image")
@@ -24,7 +24,7 @@
 
 <script>
 import { mixin as clickaway } from 'vue-clickaway'
-import { mapState, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 export default {
   mixins: [ clickaway ],
   data() {

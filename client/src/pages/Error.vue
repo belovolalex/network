@@ -1,7 +1,7 @@
 <template lang="pug">
   .page-not-found
-    p.page-not-found__title страница не найдена
-    router-link.page-not-found__to-main(to="/") на главную
+    p.page-not-found__title Page not found
+    router-link.page-not-found__to-main(to="/") To main page
 </template>
 
 <script>

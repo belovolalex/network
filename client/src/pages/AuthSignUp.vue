@@ -7,7 +7,7 @@
             label.label(
                         for="firstName"
                         :class="[labelName ? false : 'hide-label']"
-                        ) Имя
+                        ) First name
               span.label-star *
             span.error(v-if="errors.has('name')") {{ errors.first('name') }}
             input(
@@ -23,7 +23,7 @@
             label.label(
                   for="lastName"
                   :class="[labelLastName ? false : 'hide-label']"
-                  ) Фамилия
+                  ) Last name
               span.label-star *
             span.error(v-if="errors.has('lastName')") {{ errors.first('lastName') }}
             input(
@@ -57,7 +57,7 @@
             label.label(
                   for="password"
                   :class="[labelPassword ? false : 'hide-label']"
-                  ) Пароль
+                  ) Password
               span.label-star *
             .icon-eye(
                       @click="showPassword"
@@ -75,7 +75,7 @@
                   @input="inputPassword($event)"
                   ref="password"
                   )
-        button.btn(@click.prevent="submitForm") зарегистрироваться
+        button.btn(@click.prevent="submitForm") To register
       form.form-verify(v-else key="verifyForm")
         auth-verify
 </template>

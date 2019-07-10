@@ -46,7 +46,7 @@ socket.on('connect', () => {
       messageState.lastMsgs.push(lastMsg)
     }
     if(messageState.stateDialogWindow &&  messageState.friend.id === sender._id) {
-      let months = 'января,февраля,марта,апреля,мая,июня,июля,августа,сентября,октября,ноября,декабря'.split(',')
+      let months = 'january,february,march,april,may,june,july,august,september,october,november,december'.split(',')
       let d = new Date(payload.created)
       let minutes = d.getMinutes() > 9 ? d.getMinutes() : '0' + d.getMinutes()
       let date = `${d.getDate()} ${months[d.getMonth()]}`

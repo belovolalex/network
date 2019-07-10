@@ -30,14 +30,14 @@ export default {
       user.stateFriendship = payload.stateFriendship
       if(!payload.stateFriendship) {
         if(payload.stateAddingMe) {
-          state.user.btnText = 'подтвердить'
+          state.user.btnText = 'confirm'
         } else if(payload.stateAdding) {
-          state.user.btnText = 'написать сообщение'
+          state.user.btnText = 'write a message'
         } else if (!payload.stateAddingMe && !payload.stateAdding) {
-          state.user.btnText = 'добавить в друзья'
+          state.user.btnText = 'add as Friend'
         }
       } else {
-        state.user.btnText = 'написать сообщение'
+        state.user.btnText = 'write a message'
       }
     },
     changeStateAdding(state, val) {

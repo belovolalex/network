@@ -3,17 +3,17 @@ export default {
   state: {
     list: [
       {
-        title: 'Моя страница ',
+        title: 'My page ',
         icon: 'icon-home2',
         url: '/'
       },
       {
-        title: 'Друзья ',
+        title: 'Friends ',
         icon: 'icon-user',
         url: '/friends'
       },
       {
-        title: 'Сообщения ',
+        title: 'Messages ',
         icon: 'icon-bubbles2',
         url: '/messages'
       }

@@ -3,15 +3,15 @@
     .wrap-friends(ref="wrapFriends")
       .wrap-friends-header(ref="header")
         .friends-header
-          .friends-header__title(@click="changeTab('FriendsFriends')") Мои друзья
+          .friends-header__title(@click="changeTab('FriendsFriends')") My friends
             span.friends__length {{ friendsLength > 0 ? friendsLength : ''}}
-          .friends-header__title.friends-header__title--search(@click="changeTab('FriendsHumans')") Поиск друзей
+          .friends-header__title.friends-header__title--search(@click="changeTab('FriendsHumans')") Friend search
         .wrap-friends-search
           .friends-search__icon-search.icon-search
           label.friends-search__label(
                                       :class="[activeInput ? 'active-input' : null, showLabel ? null : 'hide-label']"
                                       for="inp"
-                                      ) начните вводить имя друга
+                                      ) start typing a friend's name
           transition(name="fade")
             input.friends-search(
                                 id="inp"

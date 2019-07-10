@@ -22,7 +22,7 @@ import { Validator } from 'vee-validate'
 Validator.localize(dictionary)
 Vue.use(VeeValidate)
 const validator = new Validator()
-validator.localize('ru')
+validator.localize('en')
 
 Vue.config.productionTip = false
 

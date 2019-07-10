@@ -3,7 +3,7 @@
   .spinner(v-if="spinnerFriends")
   .queries(v-if="whoAddingMe.length")
     p.queries__title {{ queryTitle }}
-    router-link.queries-wrap-friend(v-for="item in whoAddingMe" :to="`/user/${item._id}`")
+    router-link.queries-wrap-friend(v-for="(item, idx) in whoAddingMe" :to="`/user/${item._id}`" :key="idx")
       .queries-friend
         .queries-wrap-image
           .queries-friend-status(:class="item.online ? 'online' : null")
@@ -11,8 +11,8 @@
         .queries-wrap-info
           .queries-wrap-info__title {{ item.name | capitalize }} {{ item.lastName | capitalize }}
           .queries-wrap-info-btns
-            button.queries-wrap-info__btn(@click.prevent="addFriend(item._id)") Подтвердить
-            button.queries-wrap-info__btn(@click.prevent="rejectionFriendship(item._id)") Отменить
+            button.queries-wrap-info__btn(@click.prevent="addFriend(item._id)") Confirm
+            button.queries-wrap-info__btn(@click.prevent="rejectionFriendship(item._id)") Cancel
 </template>
 
 <script>

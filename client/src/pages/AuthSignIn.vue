@@ -1,8 +1,8 @@
 <template lang="pug">
   form.wrap-sign-in
     .sign-in-congratulations(v-if="styleGoToSignIn")
-      p Поздравляем с успешной регистрацией!
-      p Для входа на сайт введите email и пароль
+      p Congratulations on your successful registration!
+      p to enter the site, enter the email and password
     .row(
         :class="[styleGoToSignIn ? 'direction-row': '']"
         )
@@ -31,7 +31,7 @@
         label.label(
                     for="password"
                     :class="[labelPassword ? false : 'hide-label']"
-                    ) Пароль
+                    ) Password
           span.label-star *
         .icon-eye(
                   @click="showPassword"
@@ -49,7 +49,7 @@
               @input="inputPassword($event)"
               ref="password"
               )
-    button.btn(@click.prevent="submitForm") войти
+    button.btn(@click.prevent="submitForm") Sign in
 </template>
 
 <script>

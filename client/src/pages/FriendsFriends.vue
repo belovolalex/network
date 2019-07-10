@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import {mapState, mapGetters} from 'vuex'
 import FriendsQuery from './FriendsFriendsQuery'
 import Friends from './FriendsFriendsFriends'
 export default {

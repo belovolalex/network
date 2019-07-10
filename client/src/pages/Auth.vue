@@ -6,11 +6,11 @@
           span.auth-header__item(
                                 :class="[activeTab === 'SignIn' ? 'active-tab': false]"
                                 @click="changeTab('SignIn')"
-                                ) вход
+                                ) Sign in
           span.auth-header__item(
                                 :class="[activeTab === 'SignUp' ? 'active-tab': false]"
                                 @click="changeTab('SignUp')"
-                                ) регистрация
+                                ) Sign up
         component(:is="activeTab")
         .wrap-error
           p.error {{error}}

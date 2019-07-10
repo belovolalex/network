@@ -4,13 +4,13 @@
       home-img
       .home-top-block-wrap-info
         .home-top-block-wrap-info-overlay
-          p раздел в разработке
+          p section in development
         p.home-top-block-info__name {{ user.name | capitalize }} {{ user.lastName | capitalize}}
-        p.home-top-block-info__status изменить статус
-        p.home-top-block-info__birthday День рождения: 
-          span.home-top-block-info__change-birthday изменить
-        p.home-top-block-info__city Город: 
-          span.home-top-block-info__change-city изменить
+        p.home-top-block-info__status change status
+        p.home-top-block-info__birthday Birthday: 
+          span.home-top-block-info__change-birthday change
+        p.home-top-block-info__city City:
+          span.home-top-block-info__change-city change
 </template>
 
 <script>

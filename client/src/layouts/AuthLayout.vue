@@ -3,8 +3,8 @@
 </template>
 
 <script>
-import Auth from '../components/Auth'
-import Error from '../components/Error'
+import Auth from '../pages/Auth'
+import Error from '../pages/Error'
 export default {
   components: {
     Auth,

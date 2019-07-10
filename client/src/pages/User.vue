@@ -91,7 +91,7 @@ export default {
     closeMsgPopup() {
       this.$modal.hide('msgPopup')
     },
-    loadImg(e) {
+    loadImg() {
       this.stateLoadingAvatar = true
     },
     openMsgPopup() {
