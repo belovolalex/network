@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './components/Home.vue'
-import Friends from './components/Friends.vue'
-import Messages from './components/Messages.vue'
-import Auth from './components/Auth.vue'
-import User from './components/User.vue'
-import Error from './components/Error.vue'
+import Home from './pages/Home.vue'
+import Friends from './pages/Friends.vue'
+import Messages from './pages/Messages.vue'
+import Auth from './pages/Auth.vue'
+import User from './pages/User.vue'
+import Error from './pages/Error.vue'
 import { store } from './store'
 
 Vue.use(Router)
